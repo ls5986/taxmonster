@@ -1,14 +1,11 @@
-import React from 'react';
-import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
 import './globals.css'
-import { Navigation } from './components/Navigation'
+import { Inter } from 'next/font/google'
 
 const inter = Inter({ subsets: ['latin'] })
 
-export const metadata: Metadata = {
-  title: 'Tax Monster - Your Friendly Tax Help Assistant',
-  description: 'Get help with your tax problems from Tax Monster, your friendly AI tax assistant.',
+export const metadata = {
+  title: 'Tax Monster - Your AI Tax Assistant',
+  description: 'Get help with your tax questions using our AI-powered assistant',
 }
 
 export default function RootLayout({
@@ -18,11 +15,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
-        <Navigation />
-        <div className="pt-16">
+      <body className={`${inter.className} bg-gray-50`}>
+        <main className="min-h-screen">
           {children}
-        </div>
+        </main>
       </body>
     </html>
   )

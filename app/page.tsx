@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import ChatWindow from './components/ChatWindow';
 import ChatIcon from './components/ChatIcon';
 import { Message } from './types/chat';
+import Image from 'next/image';
 
 const QUICK_QUESTIONS = [
   "I owe back taxes",
@@ -90,41 +91,63 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen bg-white">
-      <section className="relative h-screen flex items-center justify-center bg-gradient-to-b from-[#E6FFF4] to-white">
-        <div className="text-center px-6 max-w-4xl">
-          <motion.h1 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-5xl md:text-7xl font-bold text-teal-600 mb-6"
-          >
-            Got Tax Problems?
-            <br />
-            Let the Tax Monster Help.
-          </motion.h1>
-          <motion.p 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="text-xl text-gray-600 mb-8"
-          >
+    <div className="container mx-auto px-4 py-8">
+      <div className="max-w-4xl mx-auto">
+        {/* Hero Section */}
+        <div className="text-center mb-12">
+          <h1 className="text-4xl font-bold text-teal-600 mb-4">Got Tax Problems?</h1>
+          <h2 className="text-3xl font-bold text-teal-500 mb-4">Let the Tax Monster Help.</h2>
+          <p className="text-gray-600 text-lg">
             Your friendly AI tax assistant is here to answer questions and guide you through your tax concerns.
-          </motion.p>
+          </p>
         </div>
-      </section>
 
-      <ChatIcon isOpen={isChatOpen} onClick={() => setIsChatOpen(true)} />
-      
-      <ChatWindow
-        isOpen={isChatOpen}
-        onClose={handleClose}
-        messages={messages}
-        input={input}
-        isLoading={isLoading}
-        onInputChange={handleInputChange}
-        onSubmit={handleSubmit}
-        onQuickQuestionClick={handleQuickQuestion}
-      />
-    </main>
+        {/* Chat Interface */}
+        <div className="bg-white rounded-lg shadow-lg p-6">
+          <div className="h-[400px] overflow-y-auto mb-4 p-4 bg-gray-50 rounded">
+            {messages.map((msg, index) => (
+              <div
+                key={index}
+                className={`mb-4 ${
+                  msg.role === 'user' ? 'text-right' : 'text-left'
+                }`}
+              >
+                <div
+                  className={`inline-block p-3 rounded-lg ${
+                    msg.role === 'user'
+                      ? 'bg-teal-500 text-white'
+                      : 'bg-gray-200 text-gray-800'
+                  }`}
+                >
+                  {msg.content}
+                </div>
+              </div>
+            ))}
+            {isLoading && (
+              <div className="text-center text-gray-500">
+                Tax Monster is thinking...
+              </div>
+            )}
+          </div>
+
+          <form onSubmit={handleSubmit} className="flex gap-2">
+            <input
+              type="text"
+              value={input}
+              onChange={handleInputChange}
+              placeholder="Ask me about taxes..."
+              className="flex-1 p-2 border rounded focus:outline-none focus:ring-2 focus:ring-teal-500"
+            />
+            <button
+              type="submit"
+              disabled={isLoading}
+              className="bg-teal-500 text-white px-4 py-2 rounded hover:bg-teal-600 disabled:opacity-50"
+            >
+              Send
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
   );
 } 

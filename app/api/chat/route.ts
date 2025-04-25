@@ -17,7 +17,6 @@ export async function POST(request: Request) {
       );
     }
 
-    // Chat completion
     const completion = await openai.chat.completions.create({
       model: 'gpt-4',
       messages: [
@@ -35,25 +34,8 @@ export async function POST(request: Request) {
       ],
     });
 
-    const responseMessage = completion.choices[0]?.message?.content;
-    if (!responseMessage) {
-      throw new Error('No response from OpenAI');
-    }
-
-    // Text-to-speech using the exact format specified
-    const speech = await openai.audio.speech.create({
-      model: "tts-1",
-      input: responseMessage,
-      voice: "onyx"
-    });
-
-    // Convert speech to base64
-    const buffer = Buffer.from(await speech.arrayBuffer());
-    const audio = buffer.toString('base64');
-
     return NextResponse.json({
-      message: responseMessage,
-      audio: audio
+      message: completion.choices[0]?.message?.content || 'Sorry, I could not process your request.',
     });
   } catch (error) {
     console.error('Chat API Error:', error);
