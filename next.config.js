@@ -1,7 +1,11 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  swcMinify: true,
+  output: 'export',
+  images: {
+    unoptimized: true,
+  },
+  basePath: '/taxmonster',
   webpack: (config) => {
     config.module.rules.push({
       test: /\.(json)$/,
@@ -9,11 +13,6 @@ const nextConfig = {
     });
     return config;
   },
-  output: 'export',
-  images: {
-    unoptimized: true,
-  },
-  basePath: '/taxmonster',
 };
 
 module.exports = nextConfig; 
