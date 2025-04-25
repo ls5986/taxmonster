@@ -13,6 +13,8 @@ const QUICK_QUESTIONS = [
   "Can I settle my tax debt?"
 ];
 
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
+
 export default function Home() {
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
@@ -58,7 +60,7 @@ export default function Home() {
     setHasInteracted(true);
 
     try {
-      const response = await fetch('/api/chat', {
+      const response = await fetch(`${basePath}/api/chat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ messages: [...messages, userMessage] }),

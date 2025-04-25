@@ -7,6 +7,7 @@ const nextConfig = {
   },
   basePath: '/taxmonster',
   assetPrefix: '/taxmonster/',
+  distDir: 'dist',
   trailingSlash: true,
   webpack: (config) => {
     config.module.rules.push({
