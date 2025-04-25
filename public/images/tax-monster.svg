@@ -1,0 +1,17 @@
+<svg width="128" height="128" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Body -->
+  <circle cx="64" cy="64" r="60" fill="#14B8A6"/>
+  
+  <!-- Eyes -->
+  <circle cx="45" cy="50" r="12" fill="white"/>
+  <circle cx="83" cy="50" r="12" fill="white"/>
+  <circle cx="45" cy="50" r="6" fill="black"/>
+  <circle cx="83" cy="50" r="6" fill="black"/>
+  
+  <!-- Smile -->
+  <path d="M40 80 Q64 100 88 80" stroke="white" stroke-width="6" stroke-linecap="round"/>
+  
+  <!-- Horns -->
+  <path d="M30 20 L45 40 L60 20" stroke="#0D9488" stroke-width="8" stroke-linecap="round"/>
+  <path d="M68 20 L83 40 L98 20" stroke="#0D9488" stroke-width="8" stroke-linecap="round"/>
+</svg> 

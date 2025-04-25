@@ -6,13 +6,19 @@ export default function Home() {
   const [message, setMessage] = useState('');
   const [chatHistory, setChatHistory] = useState<Array<{role: string, content: string}>>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [showChat, setShowChat] = useState(false);
 
-  // Auto welcome message
+  // Auto welcome message after 2 seconds
   useEffect(() => {
-    setChatHistory([{
-      role: 'assistant',
-      content: "Hi! I'm Tax Monster. How can I help with your tax questions today?"
-    }]);
+    const timer = setTimeout(() => {
+      setShowChat(true);
+      setChatHistory([{
+        role: 'assistant',
+        content: "Hi! I'm Tax Monster. How can I help with your tax questions today?"
+      }]);
+    }, 2000);
+
+    return () => clearTimeout(timer);
   }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -52,8 +58,9 @@ export default function Home() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-teal-50 to-white">
-      <div className="max-w-4xl mx-auto px-4 py-12">
+    <div className="min-h-screen bg-gradient-to-b from-teal-50 to-white relative">
+      {/* Main Content */}
+      <div className="max-w-4xl mx-auto px-4 py-12 relative z-10">
         <div className="text-center mb-8">
           <h1 className="text-5xl font-bold text-teal-600 mb-4">Got Tax Problems?</h1>
           <h2 className="text-4xl font-bold text-teal-500 mb-4">Let the Tax Monster Help.</h2>
@@ -62,66 +69,61 @@ export default function Home() {
           </p>
         </div>
 
-        {/* Quick Questions */}
-        <div className="flex flex-wrap gap-2 justify-center mb-8">
-          {quickQuestions.map((q, i) => (
-            <button
-              key={i}
-              onClick={() => {
-                setMessage(q);
-                handleSubmit({ preventDefault: () => {} } as React.FormEvent);
-              }}
-              className="bg-teal-100 text-teal-700 px-4 py-2 rounded-full hover:bg-teal-200 transition-colors"
-            >
-              {q}
-            </button>
-          ))}
+        {/* Tax Monster Character */}
+        <div className="absolute right-4 top-4 w-32 h-32">
+          <img
+            src="/taxmonster/images/tax-monster.svg"
+            alt="Tax Monster Character"
+            className="w-full h-full animate-bounce"
+          />
         </div>
 
         {/* Chat Interface */}
-        <div className="bg-white rounded-xl shadow-2xl p-6">
-          <div className="h-[400px] overflow-y-auto mb-6 p-4 bg-gray-50 rounded-lg">
-            {chatHistory.map((msg, index) => (
-              <div
-                key={index}
-                className={`mb-4 ${
-                  msg.role === 'user' ? 'text-right' : 'text-left'
-                }`}
-              >
+        <div className={`transform transition-all duration-500 ${showChat ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
+          <div className="bg-white rounded-xl shadow-2xl p-6">
+            <div className="h-[400px] overflow-y-auto mb-6 p-4 bg-gray-50 rounded-lg">
+              {chatHistory.map((msg, index) => (
                 <div
-                  className={`inline-block p-4 rounded-lg max-w-[80%] ${
-                    msg.role === 'user'
-                      ? 'bg-teal-500 text-white'
-                      : 'bg-gray-200 text-gray-800'
+                  key={index}
+                  className={`mb-4 ${
+                    msg.role === 'user' ? 'text-right' : 'text-left'
                   }`}
                 >
-                  {msg.content}
+                  <div
+                    className={`inline-block p-4 rounded-lg max-w-[80%] ${
+                      msg.role === 'user'
+                        ? 'bg-teal-500 text-white'
+                        : 'bg-gray-200 text-gray-800'
+                    }`}
+                  >
+                    {msg.content}
+                  </div>
                 </div>
-              </div>
-            ))}
-            {isLoading && (
-              <div className="text-center text-gray-500 animate-pulse">
-                Tax Monster is thinking...
-              </div>
-            )}
-          </div>
+              ))}
+              {isLoading && (
+                <div className="text-center text-gray-500 animate-pulse">
+                  Tax Monster is thinking...
+                </div>
+              )}
+            </div>
 
-          <form onSubmit={handleSubmit} className="flex gap-3">
-            <input
-              type="text"
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-              placeholder="Ask me about taxes..."
-              className="flex-1 p-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-teal-500 text-lg"
-            />
-            <button
-              type="submit"
-              disabled={isLoading}
-              className="bg-teal-500 text-white px-6 py-3 rounded-lg hover:bg-teal-600 disabled:opacity-50 text-lg font-semibold transition-colors"
-            >
-              Send
-            </button>
-          </form>
+            <form onSubmit={handleSubmit} className="flex gap-3">
+              <input
+                type="text"
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                placeholder="Ask me about taxes..."
+                className="flex-1 p-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-teal-500 text-lg"
+              />
+              <button
+                type="submit"
+                disabled={isLoading}
+                className="bg-teal-500 text-white px-6 py-3 rounded-lg hover:bg-teal-600 disabled:opacity-50 text-lg font-semibold transition-colors"
+              >
+                Send
+              </button>
+            </form>
+          </div>
         </div>
       </div>
     </div>
