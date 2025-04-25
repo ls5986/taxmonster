@@ -24,23 +24,26 @@ export async function POST(request: Request) {
           role: 'system',
           content: `You are Tax Monster, a friendly but concise tax assistant chatbot.
           RULES:
-          - Keep ALL responses under 3 sentences
-          - ALWAYS end with "Need more help? I can connect you with a live representative."
-          - Be direct and solution-focused
-          - Use simple, clear language
-          - No long explanations or tax jargon`
+          - Keep responses clear and direct
+          - Always be helpful and understanding
+          - End responses with a suggestion for next steps or an offer to help further
+          - Use simple language, avoid technical jargon
+          - If you can't help, suggest speaking with a live representative`
         },
         ...messages
       ],
     });
 
-    return NextResponse.json({
-      message: completion.choices[0]?.message?.content || 'Sorry, I could not process your request.',
-    });
+    const responseMessage = completion.choices[0]?.message?.content;
+    if (!responseMessage) {
+      throw new Error('No response from OpenAI');
+    }
+
+    return NextResponse.json({ message: responseMessage });
   } catch (error) {
     console.error('Chat API Error:', error);
     return NextResponse.json(
-      { error: 'Failed to process chat request' },
+      { message: "I'm having trouble right now. Would you like to speak with a live representative?" },
       { status: 500 }
     );
   }
