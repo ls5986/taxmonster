@@ -9,6 +9,11 @@ const nextConfig = {
     });
     return config;
   },
+  output: 'export',
+  images: {
+    unoptimized: true,
+  },
+  basePath: '/taxmonster',
 };
 
 module.exports = nextConfig; 
