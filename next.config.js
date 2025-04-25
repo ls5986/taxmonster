@@ -5,7 +5,6 @@ const nextConfig = {
     unoptimized: true,
   },
   basePath: '/taxmonster',
-  trailingSlash: true,
 };
 
 module.exports = nextConfig; 
