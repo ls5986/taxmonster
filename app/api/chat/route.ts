@@ -2,48 +2,41 @@ import { NextResponse } from 'next/server';
 import OpenAI from 'openai';
 
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
+  apiKey: process.env.OPENAI_API_KEY
 });
 
-export async function POST(request: Request) {
-  try {
-    const body = await request.json();
-    const { messages } = body;
+const SYSTEM_PROMPT = `You are the Tax Monster, a friendly and knowledgeable tax assistant. Your goal is to help users understand tax concepts and answer their tax-related questions in a clear, accurate, and approachable way. Always maintain a friendly tone while providing accurate tax information. If you're not sure about something, be honest and suggest consulting a tax professional. Remember to:
 
-    if (!messages) {
-      return NextResponse.json(
-        { error: 'Messages are required' },
-        { status: 400 }
-      );
-    }
+1. Keep explanations simple and easy to understand
+2. Use examples when helpful
+3. Break down complex concepts
+4. Be clear about when something is a general guideline vs. a specific rule
+5. Remind users to consult tax professionals for specific advice
+6. Stay up to date with current tax laws and regulations
+7. Be friendly and encouraging`;
+
+export async function POST(req: Request) {
+  try {
+    const body = await req.json();
+    const messages = body.messages || [];
 
     const completion = await openai.chat.completions.create({
-      model: 'gpt-4',
+      model: "gpt-4",
       messages: [
-        {
-          role: 'system',
-          content: `You are Tax Monster, a friendly but concise tax assistant chatbot.
-          RULES:
-          - Keep responses clear and direct
-          - Always be helpful and understanding
-          - End responses with a suggestion for next steps or an offer to help further
-          - Use simple language, avoid technical jargon
-          - If you can't help, suggest speaking with a live representative`
-        },
+        { role: "system", content: SYSTEM_PROMPT },
         ...messages
       ],
+      temperature: 0.7,
+      max_tokens: 500
     });
 
-    const responseMessage = completion.choices[0]?.message?.content;
-    if (!responseMessage) {
-      throw new Error('No response from OpenAI');
-    }
-
-    return NextResponse.json({ message: responseMessage });
+    return NextResponse.json({
+      message: completion.choices[0].message.content
+    });
   } catch (error) {
-    console.error('Chat API Error:', error);
+    console.error('OpenAI API error:', error);
     return NextResponse.json(
-      { message: "I'm having trouble right now. Would you like to speak with a live representative?" },
+      { error: 'Failed to get response from AI' },
       { status: 500 }
     );
   }

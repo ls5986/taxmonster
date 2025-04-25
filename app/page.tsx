@@ -1,6 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Lottie from 'react-lottie-player';
+import taxMonsterAnimation from '../public/tax-monster.json';
 
 export default function Home() {
   const [message, setMessage] = useState('');
@@ -71,10 +73,11 @@ export default function Home() {
 
         {/* Tax Monster Character */}
         <div className="absolute right-4 top-4 w-32 h-32">
-          <img
-            src="/taxmonster/images/tax-monster.svg"
-            alt="Tax Monster Character"
-            className="w-full h-full animate-bounce"
+          <Lottie
+            loop
+            play
+            animationData={taxMonsterAnimation}
+            style={{ width: '100%', height: '100%' }}
           />
         </div>
 
