@@ -3,7 +3,7 @@
 An AI-powered tax assistant that helps answer your tax-related questions with a friendly interface.
 
 <div align="center">
-  <img src="public/tax-monster-preview.png" alt="Tax Monster" width="300" />
+  <img src="./assets/tax-monster-preview.png" alt="Tax Monster" width="300" />
 </div>
 
 ## Meet Tax Monster!
