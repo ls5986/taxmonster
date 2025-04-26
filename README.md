@@ -2,7 +2,13 @@
 
 An AI-powered tax assistant that helps answer your tax-related questions with a friendly interface.
 
-![Tax Monster](public/tax-monster-preview.png)
+<div align="center">
+  <img src="public/tax-monster-preview.png" alt="Tax Monster" width="300" />
+</div>
+
+## Meet Tax Monster!
+
+Your friendly AI tax assistant is here to help you navigate the complex world of taxes. With a cheerful smile and expert knowledge, Tax Monster makes understanding taxes less intimidating and more approachable.
 
 ## Features
 
@@ -10,6 +16,8 @@ An AI-powered tax assistant that helps answer your tax-related questions with a 
 - AI-powered responses to tax-related questions
 - Modern, responsive design
 - Real-time chat interactions
+- Friendly and approachable UI
+- Instant tax-related answers and guidance
 
 ## Tech Stack
 
@@ -24,7 +32,7 @@ An AI-powered tax assistant that helps answer your tax-related questions with a 
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/tax-monster.git
+git clone https://github.com/ls5986/taxmonster.git
 cd tax-monster
 ```
 
@@ -48,6 +56,20 @@ npm run dev
 ## Environment Variables
 
 - `OPENAI_API_KEY`: Your OpenAI API key for the chat functionality
+
+## How It Works
+
+1. Click on the friendly Tax Monster to start a chat
+2. Ask any tax-related question
+3. Get instant, AI-powered responses
+4. Enjoy a stress-free tax assistance experience!
+
+## Contributing
+
+Contributions are welcome! Feel free to:
+- Report bugs
+- Suggest new features
+- Submit pull requests
 
 ## License
 
