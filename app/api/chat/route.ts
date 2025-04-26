@@ -1,6 +1,11 @@
 import { NextResponse } from 'next/server';
 import OpenAI from 'openai';
 
+// Validate API key
+if (!process.env.OPENAI_API_KEY) {
+  throw new Error('Missing OPENAI_API_KEY environment variable');
+}
+
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY
 });
@@ -17,26 +22,59 @@ const SYSTEM_PROMPT = `You are the Tax Monster, a friendly and knowledgeable tax
 
 export async function POST(req: Request) {
   try {
+    // Validate request
+    if (!process.env.OPENAI_API_KEY) {
+      console.error('OpenAI API key not configured');
+      return NextResponse.json(
+        { error: 'OpenAI API key not configured' },
+        { status: 500 }
+      );
+    }
+
+    // Parse request body
     const body = await req.json();
     const messages = body.messages || [];
 
+    if (!messages.length) {
+      return NextResponse.json(
+        { error: 'No messages provided' },
+        { status: 400 }
+      );
+    }
+
+    // Call OpenAI
+    console.log('Calling OpenAI with messages:', messages);
     const completion = await openai.chat.completions.create({
       model: "gpt-4",
       messages: [
         { role: "system", content: SYSTEM_PROMPT },
-        ...messages
+        ...messages.map((msg: any) => ({
+          role: msg.role,
+          content: msg.content
+        }))
       ],
       temperature: 0.7,
       max_tokens: 500
     });
 
+    // Validate response
+    if (!completion.choices[0]?.message?.content) {
+      console.error('No response from OpenAI');
+      throw new Error('No response from OpenAI');
+    }
+
+    // Return response
     return NextResponse.json({
       message: completion.choices[0].message.content
     });
-  } catch (error) {
+  } catch (error: any) {
+    // Log and return error
     console.error('OpenAI API error:', error);
     return NextResponse.json(
-      { error: 'Failed to get response from AI' },
+      { 
+        error: 'Failed to get response from AI',
+        details: error.message 
+      },
       { status: 500 }
     );
   }
